@@ -25,6 +25,7 @@ default_args = {
 
 s3_bucket = Variable.get('s3_bucket')
 
+
 @dag(
     default_args=default_args,
     description="Load and transform data in Redshift with Airflow",
@@ -42,9 +43,9 @@ def final_project():
         aws_credentials_id="aws_credentials",
         table="staging_events",
         s3_bucket= s3_bucket,
-        s3_key= "log-data/{}/{}",
-        s3_path="s3://frequently-modulated/log_data",
-        json_option="s3://frequently-modulated/log_json_path.json",
+        s3_key= "log-data",
+        s3_path=f"s3://{s3_bucket}/log-data",
+        json_option=f"s3://{s3_bucket}/log_json_path.json",
         task_id="Stage_events",
     )
 
@@ -52,10 +53,10 @@ def final_project():
         task_id="Stage_songs",
         redshift_conn_id="redshift",
         aws_credentials_id="aws_credentials",
-        table="stage_songs",
+        table="staging_songs",
         s3_bucket= s3_bucket,
-        s3_key="song_data",
-        s3_path="s3://frequently-modulated/song_data",
+        s3_key="song-data/A/A/A",
+        s3_path=f"s3://{s3_bucket}/song-data/A/A/A",
         json_option="auto",
     )
 
@@ -63,7 +64,7 @@ def final_project():
         task_id="Load_songplays_fact_table",
         redshift_conn_id="redshift",
         sql=sq.SqlQueries.songplay_table_insert,
-        table="song_plays",
+        table="songplays",
         truncate=False
     )
 
