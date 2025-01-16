@@ -15,7 +15,7 @@ from final_project_operators import final_project_sql_statements as sq
 
 default_args = {
     "owner": "freq_mod",
-    "start_date": pendulum.now(),
+    "start_date": datetime(2015, 1, 16)
     "retries": 3, # from task: 3 retries on failure
     "retry_delay": timedelta(minutes=5), # from task: retry every five minutes
     "catchup": False, # from task
