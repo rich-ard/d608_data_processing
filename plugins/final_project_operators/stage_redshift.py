@@ -9,7 +9,6 @@ class StageToRedshiftOperator(BaseOperator):
         COPY {} FROM '{}'
         ACCESS_KEY_ID '{}'
         SECRET_ACCESS_KEY '{}'
-        # REGION '{}'
         JSON '{}'
     """
 
@@ -49,8 +48,8 @@ class StageToRedshiftOperator(BaseOperator):
         redshift.run("DELETE FROM {}".format(self.table))
         self.log.info("Data cleared from destination Redshift table")
         self.log.info("Copying data from S3 to Redshift")
-        rendered_key = self.s3_key.format(**context)
-        s3_path = "s3://{}/{}".format(self.s3_bucket, rendered_key)
+        # rendered_key = self.s3_key#.format(**context)
+        # s3_path = "s3://{}/{}".format(self.s3_bucket, rendered_key)
         formatted_sql = StageToRedshiftOperator.copy_sql.format(
             self.table,
             self.s3_path,
@@ -59,6 +58,7 @@ class StageToRedshiftOperator(BaseOperator):
             # self.region, 
             self.json_option,
         )
+        self.log.info(formatted_sql)
         redshift.run(formatted_sql)
         self.log.info("Data copied from S3 to Redshift")
         # self.log.info('StageToRedshiftOperator not implemented yet')
