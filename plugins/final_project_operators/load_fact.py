@@ -33,6 +33,7 @@ class LoadFactOperator(BaseOperator):
             postgres.run(f'TRUNCATE {self.table}')
             
         self.log.info(f'Loading fact table {self.table}')
+        self.log.info(f'Query as follows:\n INSERT INTO {self.table} {self.sql}')
         postgres.run(f'INSERT INTO {self.table} {self.sql}')
         self.log.info(f'Finished loading fact table {self.table}')
         # self.log.info('LoadFactOperator not implemented yet')
